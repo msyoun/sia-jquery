@@ -1,0 +1,1 @@
+Archivos fx- contienen funciones, rp- contienen instrucciones que devuelven TRUE OR FALSE
