@@ -7,8 +7,9 @@
   include 'fx-common.php';
 
   // AGREGAR SANITACION DE SQL
+  $sha_pass = hash('SHA512', $_POST['password']);
 
-  $where = 'user_name ="'.$_POST['username'].'" && user_pass ="'.$_POST['password'].'"';
+  $where = 'user_name ="'.$_POST['username'].'" && user_pass ="'.$sha_pass.'"';
   if ($result = SqlSelect('*','user',$where, $conn)) {
 
     $user = Fetch($result);
@@ -17,9 +18,9 @@
 
     if (ReNewSession($conn, $user['user_id']) === TRUE) {
 
-      $sha_gen = hash('SHA512', time());
-      if (SqlUpdate('user','user_token="'.$sha_gen.'"','user_id='.$user['user_id'],$conn)) {
-        $_SESSION['TOKEN'] = $sha_gen;
+      $sha_token = hash('SHA512', time());
+      if (SqlUpdate('user','user_token="'.$sha_token.'"','user_id='.$user['user_id'],$conn)) {
+        $_SESSION['TOKEN'] = $sha_token;
         echo "TRUE";
       } else {
         echo "FALSE";
